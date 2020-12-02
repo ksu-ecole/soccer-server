@@ -107,9 +107,9 @@ public class ApplicationAccountController {
             return new ResponseEntity<>("불가능한 요청입니다.",HttpStatus.BAD_REQUEST);
         }
 
-        applicationAccountRepository.deleteById(apply.getId());
-
         ApplicationAccountDTO response = new ApplicationAccountDTO(apply);
+
+        applicationAccountRepository.deleteById(apply.getId());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -151,9 +151,9 @@ public class ApplicationAccountController {
             return new ResponseEntity<>("불가능한 요청입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        applicationAccountRepository.deleteById(apply.getId());
 
         ApplicationAccountDTO response = new ApplicationAccountDTO(apply);
+        applicationAccountRepository.deleteById(apply.getId());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
