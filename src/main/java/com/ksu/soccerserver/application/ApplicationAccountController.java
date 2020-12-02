@@ -107,9 +107,9 @@ public class ApplicationAccountController {
             return new ResponseEntity<>("불가능한 요청입니다.",HttpStatus.BAD_REQUEST);
         }
 
-        ApplicationAccount applied = applicationAccountRepository.save(apply);
+        applicationAccountRepository.deleteById(apply.getId());
 
-        ApplicationAccountDTO response = new ApplicationAccountDTO(applied);
+        ApplicationAccountDTO response = new ApplicationAccountDTO(apply);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -127,6 +127,7 @@ public class ApplicationAccountController {
 
             apply.updateTeamStatus(TeamStatus.valueOf(applicationAccountTeamRequest.getTeamStatus().name()));
 
+            applicationAccountRepository.save(apply);
             // 현재 application에 Account의 상태가 PENDING중이면서 Team의 상태가 ACCEPT이면 가입완료
             if (apply.getAccountStatus().name().equals(AccountStatus.PENDING.name())
                     && apply.getTeamStatus().equals(TeamStatus.ACCEPT)){
@@ -150,9 +151,9 @@ public class ApplicationAccountController {
             return new ResponseEntity<>("불가능한 요청입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        applicationAccountRepository.save(apply);
+        applicationAccountRepository.deleteById(apply.getId());
 
-        ApplicationAccountDTO response = new ApplicationAccountDTO();
+        ApplicationAccountDTO response = new ApplicationAccountDTO(apply);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
