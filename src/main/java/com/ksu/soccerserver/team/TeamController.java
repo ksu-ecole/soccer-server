@@ -63,12 +63,10 @@ public class TeamController {
                 TeamDTO response = new TeamDTO(madeTeam, accounts);
                 response.setIsOwner(true);
                 return new ResponseEntity<>(response, HttpStatus.CREATED);
-            }
-            else {
+            } else {
                 return new ResponseEntity<>("이미 가입한 팀이 있습니다.", HttpStatus.BAD_REQUEST);
             }
-        }
-        else{
+        } else{
             return new ResponseEntity<>("이미 존재하는 팀입니다.", HttpStatus.BAD_REQUEST);
         }
     }
@@ -127,10 +125,7 @@ public class TeamController {
         Team findTeam = teamRepository.findById(teamId).orElseThrow
                 (() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 팀입니다."));
 
-        if(nowAccount.getRoles().contains("ROLE_LEADER")) {
-            if(!findTeam.getOwner().getId().equals(nowAccount.getId())) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
+        if(findTeam.getOwner().getId().equals(nowAccount.getId())) {
 
             List<Account> accounts = accountRepository.findAllByTeam(findTeam);
             //applies = 팀 가입 신청 List
@@ -145,7 +140,7 @@ public class TeamController {
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
-        //TeamResponse response = modelMapper.map(findTeam, TeamResponse.class);
+
         List<Account> accounts = accountRepository.findAllByTeam(findTeam);
         TeamDTO response = new TeamDTO(findTeam, accounts);
 
