@@ -51,7 +51,7 @@ public class AccountController {
     // 본인 회원정보 출력
     @GetMapping("/profile")
     public ResponseEntity<?> loadProfile(@CurrentAccount Account currentAccount){
-        Account account = accountRepository.findByEmail(currentAccount.getEmail())
+        Account account = accountRepository.findByEmail(currentAccount.getEmail()   )
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
         if(currentAccount.getId().equals(account.getId())) {
