@@ -1,14 +1,12 @@
 package com.ksu.soccerserver.team.dto;
 
 import com.ksu.soccerserver.account.Account;
-import com.ksu.soccerserver.account.AccountRepository;
 import com.ksu.soccerserver.application.dto.ApplicationAccountDTO;
 import com.ksu.soccerserver.team.Team;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Set;
 
 @Getter @Setter
 /* Team 정보 출력을 위한 객체 */
@@ -19,7 +17,6 @@ public class TeamDTO {
     private String logopath;
     private String district;
     private String description;
-    private Boolean isOwner = false;
     private TeamsAccountDTO owner;
     private TeamsAccountsDTO accounts;
     private List<ApplicationAccountDTO> applies;

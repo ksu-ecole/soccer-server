@@ -7,7 +7,6 @@ import com.ksu.soccerserver.application.dto.ApplicationAccountDTO;
 import com.ksu.soccerserver.application.dto.ApplicationAccountRequest;
 import com.ksu.soccerserver.application.dto.ApplicationAccountTeamRequest;
 import com.ksu.soccerserver.application.enums.AccountStatus;
-import com.ksu.soccerserver.application.enums.HomeStatus;
 import com.ksu.soccerserver.application.enums.TeamStatus;
 import com.ksu.soccerserver.team.Team;
 import com.ksu.soccerserver.team.TeamRepository;
@@ -35,8 +34,7 @@ public class ApplicationAccountController {
 
         List<ApplicationAccountDTO> applicationLists = applicationAccountRepository.findByAccount(nowAccount)
                 .stream()
-                .map(applicationAccount -> new ApplicationAccountDTO(applicationAccount)
-                        )
+                .map(applicationAccount -> new ApplicationAccountDTO(applicationAccount))
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(applicationLists, HttpStatus.OK);
@@ -53,8 +51,7 @@ public class ApplicationAccountController {
 
         List<ApplicationAccountDTO> applies = applicationAccountRepository.findByTeam(findTeam)
                 .stream()
-                .map(applicationAccount -> new ApplicationAccountDTO(applicationAccount)
-                    )
+                .map(applicationAccount -> new ApplicationAccountDTO(applicationAccount))
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(applies, HttpStatus.OK);
@@ -98,7 +95,6 @@ public class ApplicationAccountController {
 
         ApplicationAccount apply = applicationAccountRepository.findById(applicationId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 요청입니다."));
-
 
         //현재 application에 저장된 유저와 현재 유저가 다른지 판별
         if(apply.getAccount().getId().equals(nowAccount.getId())){
@@ -150,7 +146,6 @@ public class ApplicationAccountController {
         } else{
             return new ResponseEntity<>("불가능한 요청입니다.", HttpStatus.BAD_REQUEST);
         }
-
 
         ApplicationAccountDTO response = new ApplicationAccountDTO(apply);
         applicationAccountRepository.deleteById(apply.getId());

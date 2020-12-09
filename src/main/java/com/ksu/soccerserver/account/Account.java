@@ -63,6 +63,7 @@ public class Account {
     @Column
     private String district;
 
+    @Column
     private boolean isOwner = false;
 
     @OneToMany(mappedBy = "account")
@@ -90,12 +91,10 @@ public class Account {
     public void changePW(String password) { this.password = password;}
 
     public void setTeam(Team team) { this.team = team; }
-    public void setTeam() { this.team = null; }
 
     public void setOwner(){ this.isOwner = true; }
 
     public void withdrawTeam() { this.team = null;}
 
     public void addRoles(String roles) { this.roles.add(roles);}
-
 }

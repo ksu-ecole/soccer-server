@@ -45,12 +45,10 @@ public class Team {
     private Account owner;
 
     // 팀에 소속된 인원들과의 관계성
-    //@JsonIgnore
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.PERSIST)
     private final Set<Account> accounts = new HashSet<>();
 
     // 팀에 가입신청한 유저들의 리스트를 나타내는 관계성
-    //@JsonIgnore
     @OneToMany(mappedBy = "team")
     private final Set<ApplicationAccount> applicationAccounts = new HashSet<>();
 

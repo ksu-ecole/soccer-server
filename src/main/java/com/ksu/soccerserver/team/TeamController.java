@@ -60,7 +60,6 @@ public class TeamController {
 
                 List<Account> accounts = accountRepository.findAllByTeam(madeTeam);
                 TeamDTO response = new TeamDTO(madeTeam, accounts);
-                response.setIsOwner(true);
                 return new ResponseEntity<>(response, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>("이미 가입한 팀이 있습니다.", HttpStatus.BAD_REQUEST);
@@ -72,8 +71,7 @@ public class TeamController {
 
     //모든팀 Get
     @GetMapping
-    public ResponseEntity<?> loadFilteredTeam(@CurrentAccount Account nowAccount,
-                                              @RequestParam(required = false) String teamName,
+    public ResponseEntity<?> loadFilteredTeam(@RequestParam(required = false) String teamName,
                                               @RequestParam(required = false) String state,
                                               @RequestParam(required = false) String district){
         List<Team> teams;
@@ -103,13 +101,8 @@ public class TeamController {
             teamDTO.setDistrict(teams.get(i).getDistrict());
             teamDTO.setDescription(teams.get(i).getDescription());
             teamDTO.setLogopath(teams.get(i).getLogopath());
-            teamDTO.setOwner(
-                    new TeamsAccountDTO(teams.get(i).getOwner())
-            );
-            teamDTO.setAccounts(
-                    new TeamsAccountsDTO(accountRepository.findAllByTeam(teams.get(i)))
-            );
-            if(teams.get(i).getOwner().equals(nowAccount)) teamDTO.setIsOwner(true);
+            teamDTO.setOwner(new TeamsAccountDTO(teams.get(i).getOwner()));
+            teamDTO.setAccounts(new TeamsAccountsDTO(accountRepository.findAllByTeam(teams.get(i))) );
 
             tempDTOS.add(teamDTO);
         }
@@ -131,8 +124,7 @@ public class TeamController {
             List<ApplicationAccountDTO> applies = applicationAccountRepository.findByTeam(findTeam)
                     .stream()
                     .map(applicationAccount ->
-                            new ApplicationAccountDTO(applicationAccount)
-                    )
+                            new ApplicationAccountDTO(applicationAccount))
                     .collect(Collectors.toList());
 
             TeamDTO response = new TeamDTO(findTeam, accounts, applies);
@@ -169,7 +161,6 @@ public class TeamController {
         List<Account> accounts = accountRepository.findAllByTeam(updatedTeam);
         
         TeamDTO response = new TeamDTO(updatedTeam, accounts);
-        response.setIsOwner(true);
       
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -185,7 +176,7 @@ public class TeamController {
         }else {
             List<Account> accounts = accountRepository.findAllByTeam(findTeam);
 
-
+            accounts.forEach(account -> account.setTeam(null));
 
             teamRepository.deleteById(findTeam.getId());
 

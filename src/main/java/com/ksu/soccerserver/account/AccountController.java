@@ -136,20 +136,24 @@ public class AccountController {
         Account findAccount = accountRepository.findById(currentAccount.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."));
 
-        Team findTeam = accountRepository.findById(currentAccount.getId()).get().getTeam();
+        Team findTeam = findAccount.getTeam();
 
-        if(teamRepository.findByAccounts(findAccount).isPresent()){
-            findTeam.getAccounts().remove(findAccount);
-            findAccount.withdrawTeam();
+        if(findTeam != null) {
+            if (teamRepository.findByAccounts(findAccount).isPresent()) {
+                findTeam.getAccounts().remove(findAccount);
+                findAccount.withdrawTeam();
 
-            Account withdrawalAccount = accountRepository.save(findAccount);
-            teamRepository.save(findTeam);
+                Account withdrawalAccount = accountRepository.save(findAccount);
+                teamRepository.save(findTeam);
 
-            AccountResponse response = new AccountResponse(withdrawalAccount);
+                AccountResponse response = new AccountResponse(withdrawalAccount);
 
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("해당 팀에 회원님이 가입되어 있지 않습니다.", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("해당 팀에 회원님이 가입되어 있지 않습니다.", HttpStatus.BAD_REQUEST);
+            }
+        } else{
+            return new ResponseEntity<>("존재하지 않는 팀입니다.", HttpStatus.BAD_REQUEST);
         }
     }
 }
