@@ -44,21 +44,20 @@ public class TeamController {
         Account currentAccount = accountRepository.findByEmail(nowAccount.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."));
 
-
         Team makingTeam = teamRequest.toEntity(currentAccount, requestUri);
         /* 방장의 팀 여부 검사 && Team 이름 중복 검사 */
         Optional<Team> isMadeTeam = teamRepository.findByName(makingTeam.getName());
         Optional<Team> isAccountJoinedTeam = teamRepository.findByAccounts(currentAccount);
+
         if(!isMadeTeam.isPresent()) {
             if(!isAccountJoinedTeam.isPresent()) {
-                currentAccount.setLeadingTeam(makingTeam);
                 currentAccount.setTeam(makingTeam);
 
                 Team madeTeam = teamRepository.save(makingTeam);
                 currentAccount.addRoles("ROLE_LEADER");
+                currentAccount.setOwner();
                 accountRepository.save(currentAccount);
 
-                //TeamResponse response = modelMapper.map(madeTeam, TeamResponse.class);
                 List<Account> accounts = accountRepository.findAllByTeam(madeTeam);
                 TeamDTO response = new TeamDTO(madeTeam, accounts);
                 response.setIsOwner(true);
@@ -180,16 +179,17 @@ public class TeamController {
     public ResponseEntity<?> deleteTeam(@PathVariable Long teamId, @CurrentAccount Account nowAccount) {
         Team findTeam = teamRepository.findById(teamId).orElseThrow
                 (() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 팀입니다."));
+
         if(!findTeam.getOwner().getId().equals(nowAccount.getId())){
             return new ResponseEntity<>("해당 유저는 팀장이 아닙니다.", HttpStatus.BAD_REQUEST);
         }else {
-            teamRepository.delete(findTeam);
-
-            //TeamResponse response = modelMapper.map(findTeam, TeamResponse.class);
             List<Account> accounts = accountRepository.findAllByTeam(findTeam);
-            TeamDTO response = new TeamDTO(findTeam, accounts);
-            response.setIsOwner(true);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+
+
+
+            teamRepository.deleteById(findTeam.getId());
+
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 }
