@@ -1,7 +1,6 @@
 package com.ksu.soccerserver.account.dto;
 
 import com.ksu.soccerserver.account.Account;
-import com.sun.istack.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,8 +20,8 @@ public class AccountResponse {
     private String weight;
     private String height;
     private String foot;
+    private boolean isOwner;
     private AccountTeamDTO team;
-    private AccountTeamDTO leadingTeam;
 
     public AccountResponse(Account account) {
         this.id = account.getId();
@@ -38,10 +37,9 @@ public class AccountResponse {
         this.weight = account.getWeight();
         this.height = account.getHeight();
         this.foot = account.getFoot();
+        this.isOwner = account.isOwner();
         if(account.getTeam()!=null){
             this.team = new AccountTeamDTO(account.getTeam());
-            this.leadingTeam = new AccountTeamDTO(account.getLeadingTeam());
         }
-
     }
 }

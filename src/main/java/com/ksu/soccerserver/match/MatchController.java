@@ -40,16 +40,14 @@ public class MatchController {
             matchResponses = matchRepository.findAllByMatchStatus(MatchStatus.PENDING)
                     .stream()
                     .filter(match -> match.getHomeTeam().getName().contains(teamName))
-                    .map(match ->
-                            new MatchResponse(match))
+                    .map(match -> new MatchResponse(match))
                     .collect(Collectors.toList());
         } else if ("All".equals(district)){
             matchResponses = matchRepository.findAllByMatchStatus(MatchStatus.PENDING)
                     .stream()
                     .filter(match -> match.getHomeTeam().getName().contains(teamName)
                         && match.getState().equals(state))
-                    .map(match ->
-                            new MatchResponse(match))
+                    .map(match -> new MatchResponse(match))
                     .collect(Collectors.toList());
         } else {
             matchResponses = matchRepository.findAllByMatchStatus(MatchStatus.PENDING)
@@ -57,8 +55,7 @@ public class MatchController {
                     .filter(match -> match.getHomeTeam().getName().contains(teamName)
                         && match.getState().equals(state)
                         && match.getDistrict().equals(district))
-                    .map(match ->
-                            new MatchResponse(match))
+                    .map(match -> new MatchResponse(match))
                     .collect(Collectors.toList());
         }
         return new ResponseEntity<>(matchResponses, HttpStatus.OK);
@@ -125,7 +122,7 @@ public class MatchController {
     public ResponseEntity<?> createMatch(@RequestBody MatchCreateRequest matchCreateRequest,
                                          @CurrentAccount Account nowAccount){
 
-        Team homeTeam = teamRepository.findById(nowAccount.getLeadingTeam().getId())
+        Team homeTeam = teamRepository.findById(nowAccount.getTeam().getId())
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 팀입니다."));
 
         if(homeTeam.getOwner().getId().equals(nowAccount.getId())) {
@@ -137,7 +134,7 @@ public class MatchController {
 
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else{
-            return new ResponseEntity<>("해당 유저는 팀팀장이 아닙니다.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("해당 유저는 팀장이 아닙니다.", HttpStatus.BAD_REQUEST);
         }
     }
 

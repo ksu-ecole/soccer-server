@@ -63,14 +63,13 @@ public class Account {
     @Column
     private String district;
 
+    private boolean isOwner = false;
+
     @OneToMany(mappedBy = "account")
     private final Set<ApplicationAccount> apply = new HashSet<>();
 
     @ManyToOne
     private Team team;
-
-    @OneToOne
-    Team leadingTeam;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -90,9 +89,10 @@ public class Account {
 
     public void changePW(String password) { this.password = password;}
 
-    public void setLeadingTeam(Team team) { this.leadingTeam = team; }
-
     public void setTeam(Team team) { this.team = team; }
+    public void setTeam() { this.team = null; }
+
+    public void setOwner(){ this.isOwner = true; }
 
     public void withdrawTeam() { this.team = null;}
 

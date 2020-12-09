@@ -54,7 +54,6 @@ public class TeamDTO {
         this.description = team.getDescription();
         this.owner = new TeamsAccountDTO(team.getOwner());
         this.accounts = new TeamsAccountsDTO(accounts);
-        this.isOwner = true;
         this.applies = applies;
     }
 }
