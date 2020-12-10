@@ -1,5 +1,6 @@
 package com.ksu.soccerserver.match.dto;
 
+import com.ksu.soccerserver.application.enums.HomeStatus;
 import com.ksu.soccerserver.match.Match;
 import com.ksu.soccerserver.match.enums.MatchStatus;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class MatchResponse {
     private String countMember;
     private String description;
     private MatchStatus matchStatus;
+    private HomeStatus homeStatus;
 
 
     public MatchResponse (Match match){
@@ -28,6 +30,7 @@ public class MatchResponse {
         this.countMember = match.getCountMember();
         this.description = match.getDescription();
         this.matchStatus = match.getMatchStatus();
+        this.homeStatus = match.getHomeStatus();
     }
 
 }
