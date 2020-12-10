@@ -49,7 +49,7 @@ public class Match {
     @ManyToOne
     private Team awayTeam;
 
-    @OneToMany(mappedBy = "match", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "match")
     private Set<ApplicationTeam> applicationTeams;
 
     public void modifyHomeInfo(MatchModifyRequest matchModifyRequest){
