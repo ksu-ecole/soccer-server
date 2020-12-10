@@ -77,7 +77,9 @@ public class MatchController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(myMatching, HttpStatus.OK);
+        OwnerMatchResponse response = new OwnerMatchResponse(myMatching);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     //특정 경기방 상세 정보 보기
