@@ -29,6 +29,15 @@ public class ApplicationTeamController {
     private final TeamRepository teamRepository;
     private final MatchRepository matchRepository;
 
+    @GetMapping("/away/{matchId}")
+    public ResponseEntity<?> loadApplication(@PathVariable Long matchId){
+        ApplicationTeam findApply = applicationTeamRepository.findByMatchId(matchId);
+
+        ApplicationTeamResponse response = new ApplicationTeamResponse(findApply);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     // 자신의 팀에서 신청한 경기에 대해 리스트를 보는 api
     @GetMapping("/away/{teamId}")
     public ResponseEntity<?> loadApplicationAways(@PathVariable Long teamId,
