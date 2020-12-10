@@ -29,8 +29,8 @@ public class ApplicationTeamController {
     private final TeamRepository teamRepository;
     private final MatchRepository matchRepository;
 
-    @GetMapping("/away/{matchId}")
-    public ResponseEntity<?> loadApplication(@PathVariable Long matchId){
+    @GetMapping("/{matchId}")
+    public ResponseEntity<?> loadOneApplication(@PathVariable Long matchId){
         ApplicationTeam findApply = applicationTeamRepository.findByMatchId(matchId);
 
         ApplicationTeamResponse response = new ApplicationTeamResponse(findApply);
@@ -40,7 +40,7 @@ public class ApplicationTeamController {
 
     // 자신의 팀에서 신청한 경기에 대해 리스트를 보는 api
     @GetMapping("/away/{teamId}")
-    public ResponseEntity<?> loadApplicationAways(@PathVariable Long teamId,
+    public ResponseEntity<?> loadApplicationAway(@PathVariable Long teamId,
                                                  @CurrentAccount Account nowAccount){
         Team awayTeam = teamRepository.findById(teamId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 팀입니다."));
