@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/accounts", "/api/login").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/accounts/images/**", "/api/accounts/**/images/**").permitAll() //유저 이미지 허가
                 .antMatchers(HttpMethod.GET,"/api/teams/images/**", "/api/teams/**/images/**").permitAll() //팀 이미지 허가
-                .antMatchers(HttpMethod.GET,"/api/find").permitAll() //아이디, 비밀번호 찾기 허가
+                .antMatchers(HttpMethod.GET,"/api/find/**").permitAll() //아이디, 비밀번호 찾기 허가
                 .antMatchers("/h2-console/**").permitAll() //개발 편의상 permitAll
                 // LEADER
                 .antMatchers(HttpMethod.GET, "/api/matches/**/home/**").hasAnyRole("LEADER")
