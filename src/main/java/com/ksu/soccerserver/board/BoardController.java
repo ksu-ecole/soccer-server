@@ -99,6 +99,7 @@ public class BoardController {
         BoardDetailResponse response = modelMapper.map(findBoard, BoardDetailResponse.class);
         response.setName(findBoard.getAccount().getName());
         response.setImage(findBoard.getAccount().getImage());
+        response.setWriterId(findBoard.getAccount().getId());
 
         for (int i=0;i<comment.size(); i++) {
             response.addComment(commentResponses.get(i));

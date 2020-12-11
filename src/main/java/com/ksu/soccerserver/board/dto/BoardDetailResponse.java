@@ -12,6 +12,7 @@ import java.util.List;
 public class BoardDetailResponse {
     private Long id;
     private String title;
+    private Long writerId;
     private String name;
     private String content;
     private LocalDateTime createdAt;
