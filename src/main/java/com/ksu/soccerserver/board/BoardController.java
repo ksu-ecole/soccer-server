@@ -73,6 +73,7 @@ public class BoardController {
 
         for (int i = 0; i < boardListResponses.size(); i++) {
             boardListResponses.get(i).setName(boards.get(i).getAccount().getName());
+            boardListResponses.get(i).setWriterId(boards.get(i).getAccount().getId());
         }
 
 
@@ -125,6 +126,7 @@ public class BoardController {
 
         for(int i=0; i<boardListResponses.size();i++){
             boardListResponses.get(i).setName(boards.get(i).getAccount().getName());
+            boardListResponses.get(i).setWriterId(boards.get(i).getAccount().getId());
         }
 
         return new ResponseEntity<>(boardListResponses, HttpStatus.OK);
