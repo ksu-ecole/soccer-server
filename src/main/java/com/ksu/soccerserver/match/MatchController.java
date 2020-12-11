@@ -169,10 +169,10 @@ public class MatchController {
                                               @RequestBody MatchRequest matchRequest,
                                               @CurrentAccount Account nowAccount){
         Match room = matchRepository.findById(matchId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 요청입니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 경기방입니다."));
 
         ApplicationTeam applyTeam = applicationTeamRepository.findById(applyTeamId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 요청입니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 팀입니다."));
 
         if(room.getHomeTeam().getOwner().getId().equals(nowAccount.getId())){
             room.updateHomeStatus(HomeStatus.valueOf(matchRequest.getHomeStatus().name()));
