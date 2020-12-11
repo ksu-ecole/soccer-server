@@ -73,7 +73,7 @@ public class ApplicationTeamController {
 
         Optional<ApplicationTeam> alreadyExist = applicationTeamRepository.findByMatchIdAndApplyTeamsId(matchId, findTeam.getId());
 
-        if(alreadyExist.isPresent()){
+        if(!alreadyExist.isPresent()){
             if(findTeam.getOwner().getId().equals(nowAccount.getId())) {
 
                 ApplicationTeam applyTeam = applicationAwayTeamRequest.toEntity(findMatch, findTeam);
