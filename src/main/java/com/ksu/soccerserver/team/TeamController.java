@@ -55,7 +55,7 @@ public class TeamController {
 
                 Team madeTeam = teamRepository.save(makingTeam);
                 currentAccount.addRoles("ROLE_LEADER");
-                currentAccount.setOwner();
+                currentAccount.setOwner(true);
                 accountRepository.save(currentAccount);
 
                 List<Account> accounts = accountRepository.findAllByTeam(madeTeam);
@@ -178,6 +178,9 @@ public class TeamController {
 
             accounts.forEach(account -> account.setTeam(null));
 
+            Account leader =  accountRepository.findById(nowAccount.getId()).get();
+            leader.setOwner(false);
+            accountRepository.save(leader);
             teamRepository.deleteById(findTeam.getId());
 
             return new ResponseEntity<>(HttpStatus.OK);

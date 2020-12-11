@@ -2,6 +2,7 @@ package com.ksu.soccerserver.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ksu.soccerserver.account.dto.AccountModifyRequest;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -92,7 +93,7 @@ public class Account {
 
     public void setTeam(Team team) { this.team = team; }
 
-    public void setOwner(){ this.isOwner = true; }
+    public void setOwner(Boolean isOwner){ this.isOwner = isOwner; }
 
     public void withdrawTeam() { this.team = null;}
 
