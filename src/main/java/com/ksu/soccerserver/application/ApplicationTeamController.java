@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -70,17 +71,23 @@ public class ApplicationTeamController {
         Team findTeam = teamRepository.findById(applicationAwayTeamRequest.getAwayTeamId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 팀입니다."));
 
-        if(findTeam.getOwner().getId().equals(nowAccount.getId())){
+        Optional<ApplicationTeam> alreadyExist = applicationTeamRepository.findByMatchIdAndApplyTeamsId(matchId, findTeam.getId());
 
-            ApplicationTeam applyTeam = applicationAwayTeamRequest.toEntity(findMatch,findTeam);
+        if(alreadyExist.isPresent()){
+            if(findTeam.getOwner().getId().equals(nowAccount.getId())) {
 
-            ApplicationTeam appliedMatch = applicationTeamRepository.save(applyTeam);
-            ApplicationTeamResponse response =
-                    new ApplicationTeamResponse(appliedMatch);
+                ApplicationTeam applyTeam = applicationAwayTeamRequest.toEntity(findMatch, findTeam);
 
-            return new ResponseEntity<>(response, HttpStatus.OK);
+                ApplicationTeam appliedMatch = applicationTeamRepository.save(applyTeam);
+                ApplicationTeamResponse response =
+                        new ApplicationTeamResponse(appliedMatch);
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>("해당 유저는 팀장이 아닙니다.", HttpStatus.BAD_REQUEST);
+            }
         } else{
-            return new ResponseEntity<>("해당 유저는 팀장이 아닙니다.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("이미 신청된 요청입니다.", HttpStatus.BAD_REQUEST);
         }
     }
 

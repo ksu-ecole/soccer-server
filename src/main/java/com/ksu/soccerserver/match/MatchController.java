@@ -175,9 +175,7 @@ public class MatchController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 요청입니다."));
 
         if(room.getHomeTeam().getOwner().getId().equals(nowAccount.getId())){
-
             room.updateHomeStatus(HomeStatus.valueOf(matchRequest.getHomeStatus().name()));
-
             if(applyTeam.getAwayStatus().name().equals(AwayStatus.PENDING.name()) &&
                     room.getHomeStatus().name().equals(HomeStatus.ACCEPT.name())){
 
@@ -194,11 +192,11 @@ public class MatchController {
                         .filter(applicationTeam -> !applicationTeam.getApplyTeams().getId().equals(awayTeam.getId()))
                         .map(ApplicationTeam::cancelApplication);
 
+                applicationTeamRepository.deleteById(applyTeam.getId());
+
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-
         }
-
         return new ResponseEntity<>("해당 유저는 팀장이 아닙니다.", HttpStatus.BAD_REQUEST);
     }
 
