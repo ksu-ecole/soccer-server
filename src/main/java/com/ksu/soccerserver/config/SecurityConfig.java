@@ -65,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/api/applications/accounts/**/team", "/api/matches/**", "/api/teams/**").hasAnyRole("LEADER")
                 .antMatchers(HttpMethod.DELETE, "/api/matches/**", "/api/teams/**").hasAnyRole("LEADER")
                 .antMatchers("/api/applications/teams/**").hasAnyRole("LEADER")
+                .antMatchers("api/applications/teams/**/away").hasAnyRole("LEADER")
                 // USER or LEADER
                 .anyRequest().authenticated()
                 .and().headers().frameOptions().disable()
